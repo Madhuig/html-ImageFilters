@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js">
+</script>
+<head>
+    <h1>Filter Fun </h1>
+    <meta charset="UTF-8">
+    <title>ImageFilters</title>
+    <link href="./style.css" rel="stylesheet" />
+</head>
+<body>
+   <canvas id="cnv" Width="750" Height="350">
+   </canvas>
+    <p style="font-size:25px">
+     Load Image: <br> 
+     <input type="file" id="picfile" value="Choose Files" multiple="false" accept="image/*" onchange="loadFile()">
+    </p>
+    <p style="font-size:30px"> Chose Filter: <br>
+     <input type="button"  value="GrayScale"  onclick="makeGray()">
+     <input type="button"  value="Make Red"  onclick="makeRed()">
+     <input type="button"  value="Rainbow"  onclick="doRainbow()">
+     <input type="button"  value="Blur"  onclick="doBlur()">
+     <br>
+     <input type="button"  value="Reset Image"  onclick="resetImage()">
+    </p>
+    <script>
+        //Définition des Variables Globales
+     var imageinput=null;
+     var imagedisplay;
+     var canvas=document.getElementById("cnv");
+     //Création de la fonction loadFile
+     function loadFile(){
+     //Getting input content
+     var fileInput=document.getElementById("picfile");
+     imageinput = new SimpleImage(fileInput);
+     //Creating Canva Variable
+     //Drawing Image on Canvas
+     imageinput.drawTo(canvas);
+     alert('Image Loaded');
+     }
+     //Création de la fonction GrayScale
+     function makeGray(){
+     if(imageinput==null|| !imageinput.complete()){
+     alert('Image not loaded');
+     return;}
+     imagedisplay= new SimpleImage(imageinput);
+     for (var pixel of imagedisplay.values()){
+        var Red=pixel.getRed();
+        var Green=pixel.getGreen();
+        var Blue=pixel.getBlue();
+        var Gray=(Red+Green+Blue)/3;
+        pixel.setRed(Gray);
+        pixel.setGreen(Gray);
+        pixel.setBlue(Gray);
+     }
+     //Drawing Image on Canvas
+     imagedisplay.drawTo(canvas);
+     alert('Image made Gray');
+     }
+     //Création de la fonction MakeRed
+     function makeRed(){
+     if(imageinput==null|| !imageinput.complete()){
+     alert('Image not loaded');
+     return;}
+     imagedisplay= new SimpleImage(imageinput);
+     for (var pixel of imagedisplay.values()){
+     var avg=(pixel.getRed()+pixel.getGreen()+pixel.getBlue())/3;
+     if(avg<128){
+     pixel.setRed(2*avg);
+     pixel.setGreen(0);
+     pixel.setBlue(0);
+     }
+     else{
+        pixel.setRed(255);
+        pixel.setGreen(2*avg-255);
+        pixel.setBlue(2*avg-255);
+     }
+     }
+     //Drawing Image Canvas
+     imagedisplay.drawTo(canvas);
+     alert('Image made Red');
+     }
+
+     //Création de la fonction doRainbow
+     function doRainbow(){
+     if(imageinput==null|| !imageinput.complete()){
+     alert('Image not loaded');
+     return;}
+     imagedisplay= new SimpleImage(imageinput);
+     for (var pixel of imagedisplay.values()){
+     if(pixel.getY()<imagedisplay.getHeight()/7){
+     pixel.setRed(255);
+     pixel.setBlue(pixel.getBlue()-80);
+     pixel.setGreen(pixel.getGreen()-80);
+     }
+     else if(pixel.getY()<imagedisplay.getHeight()*2/7){
+     pixel.setRed(pixel.getRed()+150);
+     pixel.setBlue(pixel.getBlue()-110);
+     pixel.setGreen(pixel.getGreen());
+     }
+     else if(pixel.getY()<imagedisplay.getHeight()*3/7){
+     pixel.setRed(pixel.getRed()+100);
+     pixel.setBlue(pixel.getBlue()-120);
+     pixel.setGreen(pixel.getGreen()+100);
+     }
+     else if(pixel.getY()<imagedisplay.getHeight()*4/7){
+     pixel.setRed(pixel.getRed()-80);
+     pixel.setBlue(pixel.getBlue()-50);
+     pixel.setGreen(pixel.getGreen()+120);
+     }
+      else if(pixel.getY()<imagedisplay.getHeight()*5/7){
+     pixel.setRed(pixel.getRed()-120);
+     pixel.setBlue(pixel.getBlue()+150);
+     pixel.setGreen(pixel.getGreen()-50);
+     }
+     else if(pixel.getY()<imagedisplay.getHeight()*6/7){
+     pixel.setRed(pixel.getRed());
+     pixel.setBlue(pixel.getBlue()+120);
+     pixel.setGreen(pixel.getGreen()-100);
+     }
+     else {
+     pixel.setRed(pixel.getRed()+50);
+     pixel.setBlue(pixel.getBlue()+150);
+     pixel.setGreen(pixel.getGreen()-130);
+     }
+     }
+     //Drawing Image on Canvas
+     imagedisplay.drawTo(canvas);
+     alert('Image made Rainbow');
+     }
+
+     //Création de la fonction doBlur
+     function doBlur(){
+     if(imageinput==null|| !imageinput.complete()){
+     alert('Image not loaded');
+     return;}
+     imagedisplay= new SimpleImage(imageinput);
+     var i=1;
+     var pix;
+     for (var pixel of imagedisplay.values()){
+     if(pixel.getX()==0 || i==10){
+     i=1;
+     pix=pixel;}
+     else{
+     imagedisplay.setPixel(pixel.getX(),pixel.getY(),pix);
+     i=i+1;
+     }     
+     }
+     //Drawing Image on Canvas
+     imagedisplay.drawTo(canvas);
+     alert('Image Blured');
+     }
+     //Création de la fonction ResetImage
+     function resetImage(){
+      if(imageinput==null|| !imageinput.complete()){
+      alert('Image not loaded');
+      return;}
+      imageinput.drawTo(canvas);
+      alert('Image reseted');
+     }
+    </script>
+</body>
+</html>

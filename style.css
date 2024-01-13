@@ -1,0 +1,14 @@
+html {
+    text-align: center;
+    background-color: gainsboro;
+  }
+  canvas {
+       border: 4px dashed gray;
+       border-radius: 10%;
+  } 
+  input {
+    font-size: 14pt;
+  }
+  h1 {
+    font-size: 35pt;
+  }
